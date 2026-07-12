@@ -164,7 +164,13 @@ a { color: inherit; text-decoration: none; }
 .study-art-copy h2 { margin: 10px 0 5px; font: 800 48px/1 "STKaiti", "KaiTi", serif; }
 .study-art-copy p { margin: 0; color: rgba(255,255,255,.76); }
 .study-toolbar { display: flex; justify-content: space-between; align-items: center; padding: 18px 38px; border-bottom: 1px solid var(--line); color: var(--ink-soft); font-size: 12px; letter-spacing: .12em; }
-.study-toolbar button { border: 0; background: var(--mint); color: var(--jade-dark); border-radius: 999px; padding: 9px 14px; cursor: pointer; letter-spacing: 0; }
+.speech-controls { display: flex; align-items: center; justify-content: flex-end; gap: 8px; letter-spacing: 0; }
+.speech-controls label { display: flex; align-items: center; gap: 6px; }
+.speech-controls label > span { color: var(--ink-soft); font-size: 11px; }
+.speech-controls select { max-width: 150px; border: 1px solid var(--line); background: #fff; color: var(--ink); border-radius: 999px; padding: 7px 25px 7px 10px; outline: none; font-size: 11px; }
+.speech-controls select:focus { border-color: var(--jade); }
+.study-toolbar button { min-width: 88px; border: 0; background: var(--mint); color: var(--jade-dark); border-radius: 999px; padding: 9px 14px; cursor: pointer; letter-spacing: 0; }
+.study-toolbar button.speaking { color: #fff; background: var(--coral); }
 .poems-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0; padding: 36px 38px 28px; }
 .poem { min-width: 0; padding: 6px 36px 16px; border-right: 1px solid var(--line); text-align: center; }
 .poem:first-child { padding-left: 10px; }
@@ -221,6 +227,8 @@ footer { display: flex; justify-content: space-between; gap: 20px; padding: 28px
   .study-aside h3, .study-aside > p, .mini-stats, .favorite-button, .source-link { grid-column: 2; }
   .mini-stats { grid-template-columns: repeat(3, 1fr); }
   .favorite-button, .source-link { width: auto; }
+  .study-toolbar { align-items: flex-start; gap: 12px; }
+  .speech-controls { flex-wrap: wrap; }
 }
 
 @media (max-width: 700px) {
@@ -258,6 +266,10 @@ footer { display: flex; justify-content: space-between; gap: 20px; padding: 28px
   .study-art-copy { left: 24px; }
   .study-art-copy h2 { font-size: 38px; }
   .study-toolbar { padding: 14px 20px; }
+  .study-toolbar > span { display: none; }
+  .speech-controls { width: 100%; justify-content: space-between; }
+  .voice-picker { order: 3; width: 100%; justify-content: flex-end; }
+  .voice-picker select { max-width: min(240px, 72vw); }
   .poems-grid { grid-template-columns: 1fr; padding: 25px 20px; }
   .poem, .poem:first-child, .poem:last-child { padding: 8px 4px 28px; border-right: 0; border-bottom: 1px solid var(--line); }
   .poem:last-child { padding-top: 26px; border-bottom: 0; }

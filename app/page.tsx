@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { lessons, themes } from "./data";
 
 type SavedState = {
@@ -20,6 +20,34 @@ function initials(index: number) {
   return String.fromCharCode(65 + index);
 }
 
+const pronunciationRules: Array<[RegExp, string]> = [
+  [/汉乐府/g, "汉月府"],
+  [/岑参/g, "岑申"],
+  [/燕然/g, "嫣然"],
+  [/燕脂/g, "胭脂"],
+  [/澹烟/g, "淡烟"],
+  [/曾云/g, "层云"],
+  [/的卢/g, "帝卢"],
+  [/北陂/g, "北杯"],
+  [/一陂/g, "一杯"],
+  [/不胜寒/g, "不生寒"],
+  [/不胜簪/g, "不生簪"],
+  [/难着/g, "难卓"],
+  [/候骑/g, "候冀"],
+  [/千骑/g, "千冀"],
+  [/铁骑/g, "铁冀"],
+  [/飞鸟相与还/g, "飞鸟相与环"],
+  [/终不还/g, "终不环"],
+  [/久未还/g, "久未环"],
+  [/长精神/g, "涨精神"],
+  [/乐游原/g, "勒游原"],
+  [/·/g, "，"],
+];
+
+function textForSpeech(text: string) {
+  return pronunciationRules.reduce((value, [pattern, replacement]) => value.replace(pattern, replacement), text);
+}
+
 export default function Home() {
   const [currentId, setCurrentId] = useState(1);
   const [theme, setTheme] = useState<(typeof themes)[number]>("全部");
@@ -29,6 +57,11 @@ export default function Home() {
   const [showAnswer, setShowAnswer] = useState(false);
   const [studyOpen, setStudyOpen] = useState(false);
   const [hydrated, setHydrated] = useState(false);
+  const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
+  const [voiceName, setVoiceName] = useState("");
+  const [speechRate, setSpeechRate] = useState(0.68);
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const speechRun = useRef(0);
 
   useEffect(() => {
     try {
@@ -48,6 +81,34 @@ export default function Home() {
     if (!hydrated) return;
     localStorage.setItem("poetry-study-v1", JSON.stringify({ answers, favorites }));
   }, [answers, favorites, hydrated]);
+
+  useEffect(() => {
+    if (!("speechSynthesis" in window)) return;
+    const synth = window.speechSynthesis;
+    const loadVoices = () => {
+      const chineseVoices = synth.getVoices().filter((voice) => /zh|cmn/i.test(voice.lang));
+      setVoices(chineseVoices);
+      setVoiceName((currentName) => {
+        if (currentName && chineseVoices.some((voice) => voice.name === currentName)) return currentName;
+        const preferred = chineseVoices.find((voice) => /ting|xiaoxiao|meijia|mandarin|普通话|晓晓|婷婷/i.test(voice.name)) || chineseVoices[0];
+        return preferred?.name || "";
+      });
+    };
+    loadVoices();
+    synth.addEventListener("voiceschanged", loadVoices);
+    return () => {
+      synth.removeEventListener("voiceschanged", loadVoices);
+      speechRun.current += 1;
+      synth.cancel();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!("speechSynthesis" in window)) return;
+    speechRun.current += 1;
+    window.speechSynthesis.cancel();
+    setIsSpeaking(false);
+  }, [currentId]);
 
   const current = lessons[currentId - 1];
   const filtered = useMemo(() => {
@@ -90,15 +151,50 @@ export default function Home() {
     setFavorites((prev) => prev.includes(current.id) ? prev.filter((id) => id !== current.id) : [...prev, current.id]);
   };
 
+  const stopSpeaking = () => {
+    if (!("speechSynthesis" in window)) return;
+    speechRun.current += 1;
+    window.speechSynthesis.cancel();
+    setIsSpeaking(false);
+  };
+
   const speak = () => {
     if (!("speechSynthesis" in window)) return;
-    window.speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(
-      current.works.map((work) => `${work.title}，${work.author}。${work.text}`).join("。")
-    );
-    utterance.lang = "zh-CN";
-    utterance.rate = 0.72;
-    window.speechSynthesis.speak(utterance);
+    if (isSpeaking) {
+      stopSpeaking();
+      return;
+    }
+    const synth = window.speechSynthesis;
+    const runId = speechRun.current + 1;
+    speechRun.current = runId;
+    synth.cancel();
+    setIsSpeaking(true);
+
+    const segments = current.works.flatMap((work) => [
+      { text: `${work.title}。${work.author}。`, rate: Math.max(0.55, speechRate - 0.04), pause: 420 },
+      ...work.text.split("\n").filter(Boolean).map((line) => ({ text: line, rate: speechRate, pause: 460 })),
+    ]);
+    const selectedVoice = voices.find((voice) => voice.name === voiceName);
+
+    const playSegment = (index: number) => {
+      if (speechRun.current !== runId) return;
+      if (index >= segments.length) {
+        setIsSpeaking(false);
+        return;
+      }
+      const segment = segments[index];
+      const utterance = new SpeechSynthesisUtterance(textForSpeech(segment.text));
+      utterance.lang = selectedVoice?.lang || "zh-CN";
+      utterance.voice = selectedVoice || null;
+      utterance.rate = segment.rate;
+      utterance.pitch = 1;
+      utterance.volume = 1;
+      utterance.onend = () => window.setTimeout(() => playSegment(index + 1), segment.pause);
+      utterance.onerror = () => setIsSpeaking(false);
+      synth.speak(utterance);
+    };
+
+    playSegment(0);
   };
 
   const nextLesson = () => {
@@ -237,7 +333,27 @@ export default function Home() {
 
               <div className="study-toolbar">
                 <span>读·圈·比·悟</span>
-                <button onClick={speak} aria-label="朗读本组诗文">▷ 听朗读</button>
+                <div className="speech-controls">
+                  <label>
+                    <span>语速</span>
+                    <select value={speechRate} onChange={(event) => setSpeechRate(Number(event.target.value))} disabled={isSpeaking} aria-label="选择朗读语速">
+                      <option value={0.58}>慢速</option>
+                      <option value={0.68}>标准</option>
+                      <option value={0.78}>稍快</option>
+                    </select>
+                  </label>
+                  {voices.length > 1 && (
+                    <label className="voice-picker">
+                      <span>音色</span>
+                      <select value={voiceName} onChange={(event) => setVoiceName(event.target.value)} disabled={isSpeaking} aria-label="选择普通话音色">
+                        {voices.map((voice) => <option value={voice.name} key={`${voice.name}-${voice.lang}`}>{voice.name}</option>)}
+                      </select>
+                    </label>
+                  )}
+                  <button className={isSpeaking ? "speaking" : ""} onClick={speak} aria-label={isSpeaking ? "停止朗读" : "朗读本组诗文"}>
+                    {isSpeaking ? "■ 停止" : "▷ 听朗读"}
+                  </button>
+                </div>
               </div>
 
               <div className="poems-grid">
