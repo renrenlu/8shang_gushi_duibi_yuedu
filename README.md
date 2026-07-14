@@ -11,7 +11,10 @@
 - 每组配有“晓晓”校音版普通话朗读，可调节语速
 - 清新水彩插画与手机、平板、电脑响应式布局
 
-在线版本：[古诗词比较阅读互动学习](https://classical-poetry-compare-50.renren49.chatgpt.site)
+在线版本：
+
+- [GitHub Pages 公开版](https://renrenlu.github.io/8shang_gushi_duibi_yuedu/)
+- [ChatGPT Sites 版](https://classical-poetry-compare-50.renren49.chatgpt.site)
 
 ## 本地运行
 
@@ -28,6 +31,8 @@ npm run dev
 npm test
 npm run lint
 ```
+
+推送到 `main` 分支后，GitHub Actions 会自动构建并更新 GitHub Pages。
 
 ## 重新生成朗读音频
 

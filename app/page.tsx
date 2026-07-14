@@ -10,11 +10,11 @@ type SavedState = {
 };
 
 const artByTheme: Record<string, string> = {
-  "边塞家国": "/art/frontier.jpg",
-  "羁旅乡思": "/art/moon.jpg",
-  "山水田园": "/art/spring.jpg",
-  "送别怀人": "/art/moon.jpg",
-  "咏史抒怀": "/art/frontier.jpg",
+  "边塞家国": "./art/frontier.jpg",
+  "羁旅乡思": "./art/moon.jpg",
+  "山水田园": "./art/spring.jpg",
+  "送别怀人": "./art/moon.jpg",
+  "咏史抒怀": "./art/frontier.jpg",
 };
 
 function initials(index: number) {
@@ -161,7 +161,7 @@ export default function Home() {
       </header>
 
       <section id="top" className="hero">
-        <img src="/art/spring.jpg" alt="春日湖畔、莺燕和行人的水彩画" />
+        <img src="./art/spring.jpg" alt="春日湖畔、莺燕和行人的水彩画" />
         <div className="hero-shade" />
         <div className="hero-content">
           <p className="eyebrow">从诗句，走进一整片山河</p>
@@ -294,7 +294,7 @@ export default function Home() {
                     key={current.id}
                     ref={audioRef}
                     className="lesson-audio"
-                    src={`/audio/lesson-${String(current.id).padStart(2, "0")}.mp3`}
+                    src={`./audio/lesson-${String(current.id).padStart(2, "0")}.mp3`}
                     preload="metadata"
                     onPlay={() => setIsSpeaking(true)}
                     onPause={() => setIsSpeaking(false)}
@@ -363,7 +363,7 @@ export default function Home() {
       )}
 
       <section className="closing section-shell">
-        <img src="/art/moon.jpg" alt="江月、孤舟和远山的水彩画" />
+        <img src="./art/moon.jpg" alt="江月、孤舟和远山的水彩画" />
         <div>
           <span className="section-kicker">每日一组</span>
           <h2>学诗不必赶，但要常回头看。</h2>

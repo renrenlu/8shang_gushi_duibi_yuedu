@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { readdir, stat } from "node:fs/promises";
+import { readFile, readdir, stat } from "node:fs/promises";
 import test from "node:test";
 import { lessons, themes } from "../app/data.ts";
 
@@ -68,4 +68,16 @@ test("ships one non-empty narration file for every lesson", async () => {
     const fileStat = await stat(new URL(file, audioRoot));
     assert.ok(fileStat.size > 1024, `${file} 音频文件异常`);
   }
+});
+
+test("builds a GitHub Pages site with repository-scoped asset paths", async () => {
+  const html = await readFile(new URL("../docs/index.html", import.meta.url), "utf8");
+  assert.match(html, /<title>古诗词比较阅读｜50 组互动自学<\/title>/);
+  assert.match(html, /\/8shang_gushi_duibi_yuedu\/assets\/[^"']+\.js/);
+  assert.match(html, /\/8shang_gushi_duibi_yuedu\/assets\/[^"']+\.css/);
+
+  const copiedAudio = await stat(new URL("../docs/audio/lesson-50.mp3", import.meta.url));
+  const copiedArtwork = await stat(new URL("../docs/art/spring.jpg", import.meta.url));
+  assert.ok(copiedAudio.size > 1024);
+  assert.ok(copiedArtwork.size > 1024);
 });
