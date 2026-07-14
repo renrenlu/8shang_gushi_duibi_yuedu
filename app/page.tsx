@@ -1,4 +1,5 @@
 "use client";
+/* eslint-disable @next/next/no-img-element -- bundled watercolor assets are already sized and compressed */
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { lessons, themes } from "./data";
@@ -35,33 +36,31 @@ export default function Home() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
-    try {
-      const raw = localStorage.getItem("poetry-study-v1");
-      if (raw) {
-        const saved = JSON.parse(raw) as SavedState;
-        setAnswers(saved.answers || {});
-        setFavorites(saved.favorites || []);
+    let cancelled = false;
+    const timer = window.setTimeout(() => {
+      try {
+        const raw = localStorage.getItem("poetry-study-v1");
+        if (raw && !cancelled) {
+          const saved = JSON.parse(raw) as SavedState;
+          setAnswers(saved.answers || {});
+          setFavorites(saved.favorites || []);
+        }
+      } catch {
+        // A fresh start is safe if local storage is unavailable.
       }
-    } catch {
-      // A fresh start is safe if local storage is unavailable.
-    }
-    setHydrated(true);
+      if (!cancelled) setHydrated(true);
+    }, 0);
+
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timer);
+    };
   }, []);
 
   useEffect(() => {
     if (!hydrated) return;
     localStorage.setItem("poetry-study-v1", JSON.stringify({ answers, favorites }));
   }, [answers, favorites, hydrated]);
-
-  useEffect(() => {
-    const audio = audioRef.current;
-    if (audio) {
-      audio.pause();
-      audio.currentTime = 0;
-    }
-    setIsSpeaking(false);
-    setAudioError(false);
-  }, [currentId]);
 
   const current = lessons[currentId - 1];
   const filtered = useMemo(() => {
@@ -78,9 +77,20 @@ export default function Home() {
   const selected = answers[current.id];
   const answered = selected !== undefined;
 
-  const goTo = (id: number) => {
+  const selectLesson = (id: number) => {
+    const audio = audioRef.current;
+    if (audio) {
+      audio.pause();
+      audio.currentTime = 0;
+    }
+    setIsSpeaking(false);
+    setAudioError(false);
     setCurrentId(id);
     setShowAnswer(answers[id] !== undefined);
+  };
+
+  const goTo = (id: number) => {
+    selectLesson(id);
     setStudyOpen(true);
     window.setTimeout(() => document.getElementById("study")?.scrollIntoView({ behavior: "smooth", block: "start" }), 30);
   };
@@ -130,8 +140,7 @@ export default function Home() {
 
   const nextLesson = () => {
     const next = current.id === lessons.length ? 1 : current.id + 1;
-    setCurrentId(next);
-    setShowAnswer(answers[next] !== undefined);
+    selectLesson(next);
   };
 
   return (
@@ -344,7 +353,7 @@ export default function Home() {
               </section>
 
               <div className="study-footer">
-                <button disabled={current.id === 1} onClick={() => { setCurrentId(current.id - 1); setShowAnswer(answers[current.id - 1] !== undefined); }}>← 上一组</button>
+                <button disabled={current.id === 1} onClick={() => selectLesson(current.id - 1)}>← 上一组</button>
                 <span>{current.id} / 50</span>
                 <button className="next" onClick={nextLesson}>{current.id === 50 ? "回到第 1 组" : "下一组"} →</button>
               </div>

@@ -1,11 +1,9 @@
 import assert from "node:assert/strict";
-import { access, readFile, readdir } from "node:fs/promises";
+import { readdir, stat } from "node:fs/promises";
 import test from "node:test";
+import { lessons, themes } from "../app/data.ts";
 
-const developmentPreviewMeta =
-  /<meta(?=[^>]*\bname=["']codex-preview["'])(?=[^>]*\bcontent=["']development["'])[^>]*>/i;
-const templateRoot = new URL("../", import.meta.url);
-const previewRoot = new URL("../app/_sites-preview/", import.meta.url);
+const answerKey = "ACBCCCBBBBBDCDDABACDCDDACACCACABDDAAACADDADDCBACDC";
 
 async function render() {
   const workerUrl = new URL("../dist/server/index.js", import.meta.url);
@@ -28,60 +26,46 @@ async function render() {
   );
 }
 
-test("server-renders the starter loading skeleton", async () => {
+test("server-renders the complete poetry study homepage", async () => {
   const response = await render();
   assert.equal(response.status, 200);
   assert.match(response.headers.get("content-type") ?? "", /^text\/html\b/i);
 
   const html = await response.text();
-  assert.match(html, developmentPreviewMeta);
-  assert.match(html, /<title>Your site is taking shape<\/title>/i);
-  assert.match(html, /Codex is working/);
-  assert.match(html, /Your site is taking shape/);
-  assert.match(html, /Codex is building the first version/);
-  assert.match(html, /react-loading-skeleton/);
-  assert.match(html, /role="status"/);
+  assert.match(html, /<html lang="zh-CN">/i);
+  assert.match(html, /<title>古诗词比较阅读｜50 组互动自学<\/title>/i);
+  assert.match(html, /四步比较法/);
+  assert.match(html, /完整收录 PDF 中的 50 组古诗词比较阅读/);
+  assert.equal((html.match(/class="lesson-card"/g) ?? []).length, 50);
+  assert.doesNotMatch(html, /codex-preview|Your site is taking shape|Codex is working/i);
 });
 
-test("keeps the loading skeleton scoped and disposable", async () => {
-  const [preview, css, page, layout, packageJson, files] = await Promise.all([
-    readFile(new URL("SkeletonPreview.tsx", previewRoot), "utf8"),
-    readFile(new URL("preview.css", previewRoot), "utf8"),
-    readFile(new URL("../app/page.tsx", import.meta.url), "utf8"),
-    readFile(new URL("../app/layout.tsx", import.meta.url), "utf8"),
-    readFile(new URL("../package.json", import.meta.url), "utf8"),
-    readdir(previewRoot),
-  ]);
+test("keeps all lesson data aligned with the PDF answer key", () => {
+  assert.equal(lessons.length, 50);
+  assert.deepEqual(lessons.map((lesson) => lesson.id), Array.from({ length: 50 }, (_, index) => index + 1));
+  assert.equal(lessons.map((lesson) => String.fromCharCode(65 + lesson.answer)).join(""), answerKey);
+  assert.deepEqual(themes, ["全部", "边塞家国", "羁旅乡思", "山水田园", "送别怀人", "咏史抒怀"]);
 
-  assert.deepEqual(files.sort(), ["SkeletonPreview.tsx", "preview.css"]);
-  assert.match(preview, /from "react-loading-skeleton"/);
-  assert.match(preview, /baseColor="#eceae7"/);
-  assert.match(preview, /highlightColor="#f9f8f6"/);
-  assert.match(preview, /duration=\{2\.8\}/);
-  assert.match(preview, /sites-skeleton-search-placeholder/);
-  assert.match(packageJson, /"react-loading-skeleton": "3\.5\.0"/);
+  for (const lesson of lessons) {
+    assert.equal(lesson.works.length, 2, `第 ${lesson.id} 组应有两篇对读诗文`);
+    assert.equal(lesson.choices.length, 4, `第 ${lesson.id} 组应有四个选项`);
+    assert.ok(Number.isInteger(lesson.answer) && lesson.answer >= 0 && lesson.answer < lesson.choices.length);
+    assert.ok(lesson.page >= 1 && lesson.page <= 20, `第 ${lesson.id} 组 PDF 页码超出范围`);
+    assert.ok(lesson.prompt.trim() && lesson.explanation.trim() && lesson.focus.trim());
+    for (const work of lesson.works) {
+      assert.ok(work.title.trim() && work.author.trim() && work.text.trim());
+    }
+  }
+});
 
-  const shellIndex = preview.indexOf('className="sites-skeleton-shell"');
-  const statusIndex = preview.indexOf('className="sites-skeleton-status"');
-  assert.ok(shellIndex >= 0 && statusIndex > shellIndex);
-  assert.match(css, /position:\s*fixed/);
-  assert.match(css, /inset:\s*0/);
-  assert.match(css, /opacity:\s*0\.52/);
-  assert.match(css, /prefers-reduced-motion:\s*reduce/);
-  assert.doesNotMatch(css, /#020617|canvas|pets|progress/i);
-  assert.doesNotMatch(
-    preview,
-    /loading-spinner|status-mark|status-progress|canvas|cookie|random/i,
-  );
+test("ships one non-empty narration file for every lesson", async () => {
+  const audioRoot = new URL("../public/audio/", import.meta.url);
+  const expected = Array.from({ length: 50 }, (_, index) => `lesson-${String(index + 1).padStart(2, "0")}.mp3`);
+  const actual = (await readdir(audioRoot)).filter((file) => /^lesson-\d{2}\.mp3$/.test(file)).sort();
+  assert.deepEqual(actual, expected);
 
-  assert.match(page, /export const metadata:\s*Metadata/);
-  assert.match(page, /"codex-preview": "development"/);
-  assert.match(page, /<SkeletonPreview \/>/);
-  assert.match(layout, /title:\s*"Starter Project"/);
-  assert.doesNotMatch(layout, /codex-preview|_sites-preview|themeColor|\bViewport\b/);
-  assert.doesNotMatch(css, /(^|\s)(html|body)\s*\{/m);
-
-  await assert.rejects(
-    access(new URL("public/_sites-preview", templateRoot)),
-  );
+  for (const file of actual) {
+    const fileStat = await stat(new URL(file, audioRoot));
+    assert.ok(fileStat.size > 1024, `${file} 音频文件异常`);
+  }
 });

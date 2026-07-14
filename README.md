@@ -1,10 +1,37 @@
 # 古诗词比较阅读互动学习
 
-50 组古诗词比较阅读练习，包含即时判题、错项解析、收藏复习、本地进度和诗文朗读。
+面向中学生的古诗词比较阅读自学网页，完整整理《基础知识之古诗词比较阅读》中的 50 组练习。
+
+## 功能
+
+- 50 组古诗词对读与四选一练习
+- 即时判题、答案解析、错题重做和收藏复习
+- 按主题筛选、按诗题或作者搜索
+- 本机保存学习进度与正确率
+- 每组配有“晓晓”校音版普通话朗读，可调节语速
+- 清新水彩插画与手机、平板、电脑响应式布局
+
+在线版本：[古诗词比较阅读互动学习](https://classical-poetry-compare-50.renren49.chatgpt.site)
+
+## 本地运行
+
+需要 Node.js `>=22.13.0`。
+
+```bash
+npm install
+npm run dev
+```
+
+质量检查：
+
+```bash
+npm test
+npm run lint
+```
 
 ## 重新生成朗读音频
 
-朗读音频由免费的 `edge-tts` 和 `zh-CN-XiaoxiaoNeural` 预先生成。多音字、古音、人名和地名校正记录在 `scripts/poetry_pronunciations.json`，网页展示的原文不会被替换。
+朗读音频由免费的 `edge-tts` 和 `zh-CN-XiaoxiaoNeural` 预先生成。多音字、古音、人名和地名校正记录在 `scripts/poetry_pronunciations.json`；网页展示的诗文原文不会被替换。
 
 ```bash
 python3 -m pip install -r scripts/requirements-audio.txt
@@ -12,102 +39,3 @@ npm run audio:generate
 ```
 
 生成结果位于 `public/audio/`，共 50 个 MP3 文件。
-
-## 开发
-
-A clean full-stack starter running on
-[vinext](https://github.com/cloudflare/vinext), with optional Cloudflare D1 and
-Drizzle support.
-
-## Prerequisites
-
-- Node.js `>=22.13.0`
-
-## Quick Start
-
-```bash
-npm install
-npm run dev
-npm run build
-```
-
-This starter does not use `wrangler.jsonc`.
-
-## Included Shape
-
-- edit site code under `app/`
-- `.openai/hosting.json` declares optional Sites D1 and R2 bindings
-- `vite.config.ts` simulates declared bindings for local development
-- `db/schema.ts` starts intentionally empty
-- `examples/d1/` contains an optional D1 example surface
-- `drizzle.config.ts` supports local migration generation when needed
-
-## Workspace Auth Headers
-
-OpenAI workspace sites can read the current user's email from
-`oai-authenticated-user-email`.
-
-SIWC-authenticated workspace sites may also receive
-`oai-authenticated-user-full-name` when the user's SIWC profile has a non-empty
-`name` claim. The full-name value is percent-encoded UTF-8 and is accompanied by
-`oai-authenticated-user-full-name-encoding: percent-encoded-utf-8`.
-
-Treat the full name as optional and fall back to email when it is absent:
-
-```tsx
-import { headers } from "next/headers";
-
-export default async function Home() {
-  const requestHeaders = await headers();
-  const email = requestHeaders.get("oai-authenticated-user-email");
-  const encodedFullName = requestHeaders.get("oai-authenticated-user-full-name");
-  const fullName =
-    encodedFullName &&
-    requestHeaders.get("oai-authenticated-user-full-name-encoding") ===
-      "percent-encoded-utf-8"
-      ? decodeURIComponent(encodedFullName)
-      : null;
-
-  const displayName = fullName ?? email;
-  // ...
-}
-```
-
-## Optional Dispatch-Owned ChatGPT Sign-In
-
-Import the ready-to-use helpers from `app/chatgpt-auth.ts` when the site needs
-optional or required ChatGPT sign-in:
-
-- Use `getChatGPTUser()` for optional signed-in UI.
-- Use `requireChatGPTUser(returnTo)` for server-rendered pages that should send
-  anonymous visitors through Sign in with ChatGPT.
-- Use `chatGPTSignInPath(returnTo)` and `chatGPTSignOutPath(returnTo)` for
-  browser links or actions.
-- Pass a same-origin relative `returnTo` path for the destination after sign-in
-  or sign-out. The helper validates and safely encodes it.
-- Mark protected pages with `export const dynamic = "force-dynamic"` because
-  they depend on per-request identity headers.
-
-Dispatch owns `/signin-with-chatgpt`, `/signout-with-chatgpt`, `/callback`, the
-OAuth cookies, and identity header injection. Do not implement app routes for
-those reserved paths. Routes that do not import and call the helper remain
-anonymous-compatible.
-
-SIWC establishes identity only; it does not prove workspace membership. Use the
-Sites hosting platform's access policy controls for workspace-wide restrictions,
-or enforce explicit server-side membership or allowlist checks.
-
-Use SIWC for account pages, user-specific dashboards, saved records, and write
-actions tied to the current ChatGPT user. Leave public content anonymous.
-
-## Useful Commands
-
-- `npm run dev`: start local development
-- `npm run build`: verify the vinext build output
-- `npm test`: build the starter and verify its rendered loading skeleton
-- `npm run db:generate`: generate Drizzle migrations after schema changes
-
-## Learn More
-
-- [vinext Documentation](https://github.com/cloudflare/vinext)
-- [Drizzle D1 Guide](https://orm.drizzle.team/docs/get-started/d1-new)
