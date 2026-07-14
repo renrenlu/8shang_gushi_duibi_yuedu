@@ -1,0 +1,357 @@
+{
+  "voice": "zh-CN-XiaoxiaoNeural",
+  "rate": "-12%",
+  "pronunciationTable": "scripts/poetry_pronunciations.json",
+  "lessons": [
+    {
+      "id": 1,
+      "file": "/audio/lesson-01.mp3",
+      "bytes": 219312,
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "rate": "-12%"
+    },
+    {
+      "id": 2,
+      "file": "/audio/lesson-02.mp3",
+      "bytes": 275040,
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "rate": "-12%"
+    },
+    {
+      "id": 3,
+      "file": "/audio/lesson-03.mp3",
+      "bytes": 261792,
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "rate": "-12%"
+    },
+    {
+      "id": 4,
+      "file": "/audio/lesson-04.mp3",
+      "bytes": 209952,
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "rate": "-12%"
+    },
+    {
+      "id": 5,
+      "file": "/audio/lesson-05.mp3",
+      "bytes": 196848,
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "rate": "-12%"
+    },
+    {
+      "id": 6,
+      "file": "/audio/lesson-06.mp3",
+      "bytes": 217728,
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "rate": "-12%"
+    },
+    {
+      "id": 7,
+      "file": "/audio/lesson-07.mp3",
+      "bytes": 201744,
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "rate": "-12%"
+    },
+    {
+      "id": 8,
+      "file": "/audio/lesson-08.mp3",
+      "bytes": 233712,
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "rate": "-12%"
+    },
+    {
+      "id": 9,
+      "file": "/audio/lesson-09.mp3",
+      "bytes": 208656,
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "rate": "-12%"
+    },
+    {
+      "id": 10,
+      "file": "/audio/lesson-10.mp3",
+      "bytes": 159552,
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "rate": "-12%"
+    },
+    {
+      "id": 11,
+      "file": "/audio/lesson-11.mp3",
+      "bytes": 321552,
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "rate": "-12%"
+    },
+    {
+      "id": 12,
+      "file": "/audio/lesson-12.mp3",
+      "bytes": 247104,
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "rate": "-12%"
+    },
+    {
+      "id": 13,
+      "file": "/audio/lesson-13.mp3",
+      "bytes": 384336,
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "rate": "-12%"
+    },
+    {
+      "id": 14,
+      "file": "/audio/lesson-14.mp3",
+      "bytes": 217440,
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "rate": "-12%"
+    },
+    {
+      "id": 15,
+      "file": "/audio/lesson-15.mp3",
+      "bytes": 245808,
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "rate": "-12%"
+    },
+    {
+      "id": 16,
+      "file": "/audio/lesson-16.mp3",
+      "bytes": 245664,
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "rate": "-12%"
+    },
+    {
+      "id": 17,
+      "file": "/audio/lesson-17.mp3",
+      "bytes": 271440,
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "rate": "-12%"
+    },
+    {
+      "id": 18,
+      "file": "/audio/lesson-18.mp3",
+      "bytes": 239616,
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "rate": "-12%"
+    },
+    {
+      "id": 19,
+      "file": "/audio/lesson-19.mp3",
+      "bytes": 340128,
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "rate": "-12%"
+    },
+    {
+      "id": 20,
+      "file": "/audio/lesson-20.mp3",
+      "bytes": 189216,
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "rate": "-12%"
+    },
+    {
+      "id": 21,
+      "file": "/audio/lesson-21.mp3",
+      "bytes": 288720,
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "rate": "-12%"
+    },
+    {
+      "id": 22,
+      "file": "/audio/lesson-22.mp3",
+      "bytes": 404352,
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "rate": "-12%"
+    },
+    {
+      "id": 23,
+      "file": "/audio/lesson-23.mp3",
+      "bytes": 241344,
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "rate": "-12%"
+    },
+    {
+      "id": 24,
+      "file": "/audio/lesson-24.mp3",
+      "bytes": 166320,
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "rate": "-12%"
+    },
+    {
+      "id": 25,
+      "file": "/audio/lesson-25.mp3",
+      "bytes": 273600,
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "rate": "-12%"
+    },
+    {
+      "id": 26,
+      "file": "/audio/lesson-26.mp3",
+      "bytes": 273888,
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "rate": "-12%"
+    },
+    {
+      "id": 27,
+      "file": "/audio/lesson-27.mp3",
+      "bytes": 254016,
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "rate": "-12%"
+    },
+    {
+      "id": 28,
+      "file": "/audio/lesson-28.mp3",
+      "bytes": 216432,
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "rate": "-12%"
+    },
+    {
+      "id": 29,
+      "file": "/audio/lesson-29.mp3",
+      "bytes": 214416,
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "rate": "-12%"
+    },
+    {
+      "id": 30,
+      "file": "/audio/lesson-30.mp3",
+      "bytes": 164736,
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "rate": "-12%"
+    },
+    {
+      "id": 31,
+      "file": "/audio/lesson-31.mp3",
+      "bytes": 180000,
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "rate": "-12%"
+    },
+    {
+      "id": 32,
+      "file": "/audio/lesson-32.mp3",
+      "bytes": 167184,
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "rate": "-12%"
+    },
+    {
+      "id": 33,
+      "file": "/audio/lesson-33.mp3",
+      "bytes": 339120,
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "rate": "-12%"
+    },
+    {
+      "id": 34,
+      "file": "/audio/lesson-34.mp3",
+      "bytes": 241200,
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "rate": "-12%"
+    },
+    {
+      "id": 35,
+      "file": "/audio/lesson-35.mp3",
+      "bytes": 338688,
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "rate": "-12%"
+    },
+    {
+      "id": 36,
+      "file": "/audio/lesson-36.mp3",
+      "bytes": 173664,
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "rate": "-12%"
+    },
+    {
+      "id": 37,
+      "file": "/audio/lesson-37.mp3",
+      "bytes": 288720,
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "rate": "-12%"
+    },
+    {
+      "id": 38,
+      "file": "/audio/lesson-38.mp3",
+      "bytes": 199296,
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "rate": "-12%"
+    },
+    {
+      "id": 39,
+      "file": "/audio/lesson-39.mp3",
+      "bytes": 292320,
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "rate": "-12%"
+    },
+    {
+      "id": 40,
+      "file": "/audio/lesson-40.mp3",
+      "bytes": 444096,
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "rate": "-12%"
+    },
+    {
+      "id": 41,
+      "file": "/audio/lesson-41.mp3",
+      "bytes": 198864,
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "rate": "-12%"
+    },
+    {
+      "id": 42,
+      "file": "/audio/lesson-42.mp3",
+      "bytes": 223488,
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "rate": "-12%"
+    },
+    {
+      "id": 43,
+      "file": "/audio/lesson-43.mp3",
+      "bytes": 251424,
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "rate": "-12%"
+    },
+    {
+      "id": 44,
+      "file": "/audio/lesson-44.mp3",
+      "bytes": 326304,
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "rate": "-12%"
+    },
+    {
+      "id": 45,
+      "file": "/audio/lesson-45.mp3",
+      "bytes": 225936,
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "rate": "-12%"
+    },
+    {
+      "id": 46,
+      "file": "/audio/lesson-46.mp3",
+      "bytes": 218448,
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "rate": "-12%"
+    },
+    {
+      "id": 47,
+      "file": "/audio/lesson-47.mp3",
+      "bytes": 159840,
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "rate": "-12%"
+    },
+    {
+      "id": 48,
+      "file": "/audio/lesson-48.mp3",
+      "bytes": 200880,
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "rate": "-12%"
+    },
+    {
+      "id": 49,
+      "file": "/audio/lesson-49.mp3",
+      "bytes": 214272,
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "rate": "-12%"
+    },
+    {
+      "id": 50,
+      "file": "/audio/lesson-50.mp3",
+      "bytes": 269136,
+      "voice": "zh-CN-XiaoxiaoNeural",
+      "rate": "-12%"
+    }
+  ]
+}
