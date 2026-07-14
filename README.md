@@ -1,4 +1,19 @@
-# vinext-starter
+# 古诗词比较阅读互动学习
+
+50 组古诗词比较阅读练习，包含即时判题、错项解析、收藏复习、本地进度和诗文朗读。
+
+## 重新生成朗读音频
+
+朗读音频由免费的 `edge-tts` 和 `zh-CN-XiaoxiaoNeural` 预先生成。多音字、古音、人名和地名校正记录在 `scripts/poetry_pronunciations.json`，网页展示的原文不会被替换。
+
+```bash
+python3 -m pip install -r scripts/requirements-audio.txt
+npm run audio:generate
+```
+
+生成结果位于 `public/audio/`，共 50 个 MP3 文件。
+
+## 开发
 
 A clean full-stack starter running on
 [vinext](https://github.com/cloudflare/vinext), with optional Cloudflare D1 and
